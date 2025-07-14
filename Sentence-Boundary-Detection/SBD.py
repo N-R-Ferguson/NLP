@@ -9,9 +9,9 @@ class DecisionTree:
         self.model = DecisionTreeClassifier(
             criterion = 'gini',
             splitter='best',
-            max_depth = None,
+            max_depth = 10,
             min_samples_split = 2,
-            min_samples_leaf= 1,
+            min_samples_leaf= 5,
             random_state=42,
         )
         
@@ -116,6 +116,7 @@ def create_database(data) -> np.array:
 
 
 
+
 def count_eos_neos(dataframe) -> int:
     '''
     
@@ -131,6 +132,7 @@ def count_eos_neos(dataframe) -> int:
             eos += 1
 
     return eos, neos
+
 
 
 
@@ -171,6 +173,7 @@ print('Test dataset creation complete.\n')
 
 
 
+
 '''
     Train Dataset information:
         1) First 5 rows of data: 
@@ -185,6 +188,7 @@ print(f'{len(train_df)} total rows in Train dataset.\n')
 
 num_eos, num_neos = count_eos_neos(train_df)
 ratio = num_eos/num_neos
+
 print(f'The Train dataset contains {num_eos} EOS and {num_neos} NEOS.',
       f'That is a ratio of {ratio:.2f} EOS/NEOS\n\n\n')
 
@@ -205,6 +209,7 @@ print(f'{len(test_df)} total rows in Test dataset.\n')
 
 num_eos, num_neos = count_eos_neos(test_df)
 ratio = num_eos/num_neos
+
 print(f'The Test dataset contains {num_eos} EOS and {num_neos} NEOS.',
       f'That is a ratio of {ratio:.2f} EOS/NEOS\n\n\n')
 
@@ -215,15 +220,21 @@ print(f'The Test dataset contains {num_eos} EOS and {num_neos} NEOS.',
 TRAIN MODEL
 '''
 print('Declaring and initializing Decision Tree model...')
+
 sbd_model_5_feature = DecisionTree()
-print('Model creation complete.')
+
+print('Model creation complete.\n')
+
+
+
+
 
 print('Training model inprogress...')
+
 X_train, y_train = train_df[:, 1:-1], train_df[:, -1:]
-
 sbd_model_5_feature.train(X_train, y_train)
-print('Training complete.')
 
+print('Training complete.\n')
 
 
 
@@ -233,9 +244,10 @@ print('Training complete.')
 TEST MODEL
 '''
 print('Testing inprogress...')
+
 X_test, y_test = test_df[:, 1:-1], test_df[:, -1:]
-print(X_test)
 sbd_model_5_feature.predict(X_test)
 sbd_model_5_feature_accuracy = sbd_model_5_feature.accuracy(y_test)
-print('Testing complete.')
+
+print('Testing complete.\n')
 print(f'The Decision Tree model has an accuracy of {sbd_model_5_feature_accuracy:0.3}%')
